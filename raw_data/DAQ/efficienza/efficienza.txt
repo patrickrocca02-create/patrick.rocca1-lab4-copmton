@@ -1,0 +1,67 @@
+Run ID = efficienza
+Start time = mer ott 15 18:05:33 2025
+
+CH0@DT5720B_24269
+	Energy calibration: C0 = 0; C1 = 1; C2 = 0; unit = keV
+	Real time = 0:09:59.963
+	Live time = 0:09:59.812
+	Dead time = 0.03 %
+	Input counts = 305777; rate (cps) = 509.66±0.92
+	Pile up counts = 0; rate (cps) = 0
+	Saturation counts = 275; rate (cps) = 0.458±0.028
+	E cut counts = 0; rate (cps) = 0
+	PSD cut counts = 0; rate (cps) = 0
+	T cut counts = 0; rate (cps) = 0
+	Singles counts = 0; rate (cps) = 0
+	Output counts = 305425; rate (cps) = 509.07±0.92
+	Gamma counts = 811; rate (cps) = 1.352±0.047
+	Neutron counts = 304614; rate (cps) = 507.72±0.92
+
+CH1@DT5720B_24269
+	Energy calibration: C0 = 0; C1 = 1; C2 = 0; unit = keV
+	Real time = 0:09:59.963
+	Live time = 0:09:59.795
+	Dead time = 0.03 %
+	Input counts = 305786; rate (cps) = 509.67±0.92
+	Pile up counts = 0; rate (cps) = 0
+	Saturation counts = 197905; rate (cps) = 329.86±0.74
+	E cut counts = 0; rate (cps) = 0
+	PSD cut counts = 0; rate (cps) = 0
+	T cut counts = 0; rate (cps) = 0
+	Singles counts = 0; rate (cps) = 0
+	Output counts = 107795; rate (cps) = 179.67±0.55
+	Gamma counts = 10233; rate (cps) = 17.06±0.17
+	Neutron counts = 97562; rate (cps) = 162.61±0.52
+
+CH2@DT5720B_24269
+	Energy calibration: C0 = 0; C1 = 1; C2 = 0; unit = keV
+	Real time = 0:09:59.963
+	Live time = 0:09:59.773
+	Dead time = 0.03 %
+	Input counts = 305797; rate (cps) = 509.69±0.92
+	Pile up counts = 0; rate (cps) = 0
+	Saturation counts = 116; rate (cps) = 0.193±0.018
+	E cut counts = 0; rate (cps) = 0
+	PSD cut counts = 0; rate (cps) = 0
+	T cut counts = 0; rate (cps) = 0
+	Singles counts = 0; rate (cps) = 0
+	Output counts = 305584; rate (cps) = 509.34±0.92
+	Gamma counts = 136; rate (cps) = 0.227±0.019
+	Neutron counts = 305448; rate (cps) = 509.11±0.92
+
+CH3@DT5720B_24269
+	Energy calibration: C0 = 0; C1 = 1; C2 = 0; unit = keV
+	Real time = 0:09:59.963
+	Live time = 0:09:59.836
+	Dead time = 0.02 %
+	Input counts = 305765; rate (cps) = 509.64±0.92
+	Pile up counts = 0; rate (cps) = 0
+	Saturation counts = 201945; rate (cps) = 336.6±0.75
+	E cut counts = 0; rate (cps) = 0
+	PSD cut counts = 0; rate (cps) = 0
+	T cut counts = 0; rate (cps) = 0
+	Singles counts = 0; rate (cps) = 0
+	Output counts = 103755; rate (cps) = 172.94±0.54
+	Gamma counts = 11006; rate (cps) = 18.34±0.17
+	Neutron counts = 92749; rate (cps) = 154.59±0.51
+

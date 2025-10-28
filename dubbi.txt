@@ -1,0 +1,2 @@
+A cosa serve il merge
+Normalizzazione, come ottenere il tempo di acquisizione dal file merged

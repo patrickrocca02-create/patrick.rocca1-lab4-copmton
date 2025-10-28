@@ -1,0 +1,57 @@
+
+# DO NOT DELETE
+
+./RawEvent_hh.so: /home/user/Produkte/root-6.28.10/root-install/include/TROOT.h
+./RawEvent_hh.so: /home/user/Produkte/root-6.28.10/root-install/include/TDirectory.h
+./RawEvent_hh.so: /home/user/Produkte/root-6.28.10/root-install/include/TNamed.h
+./RawEvent_hh.so: /home/user/Produkte/root-6.28.10/root-install/include/TObject.h
+./RawEvent_hh.so: /home/user/Produkte/root-6.28.10/root-install/include/Rtypes.h
+./RawEvent_hh.so: /home/user/Produkte/root-6.28.10/root-install/include/RtypesCore.h
+./RawEvent_hh.so: /home/user/Produkte/root-6.28.10/root-install/include/ROOT/RConfig.hxx
+./RawEvent_hh.so: /home/user/Produkte/root-6.28.10/root-install/include/RVersion.h
+./RawEvent_hh.so: /home/user/Produkte/root-6.28.10/root-install/include/RConfigure.h
+./RawEvent_hh.so: /home/user/Produkte/root-6.28.10/root-install/include/DllImport.h
+./RawEvent_hh.so: /home/user/Produkte/root-6.28.10/root-install/include/strtok.h
+./RawEvent_hh.so: /home/user/Produkte/root-6.28.10/root-install/include/strlcpy.h
+./RawEvent_hh.so: /home/user/Produkte/root-6.28.10/root-install/include/snprintf.h
+./RawEvent_hh.so: /home/user/Produkte/root-6.28.10/root-install/include/TGenericClassInfo.h
+./RawEvent_hh.so: /home/user/Produkte/root-6.28.10/root-install/include/TSchemaHelper.h
+./RawEvent_hh.so: /home/user/Produkte/root-6.28.10/root-install/include/TIsAProxy.h
+./RawEvent_hh.so: /home/user/Produkte/root-6.28.10/root-install/include/TVirtualIsAProxy.h
+./RawEvent_hh.so: /home/user/Produkte/root-6.28.10/root-install/include/TStorage.h
+./RawEvent_hh.so: /home/user/Produkte/root-6.28.10/root-install/include/TVersionCheck.h
+./RawEvent_hh.so: /home/user/Produkte/root-6.28.10/root-install/include/RVersion.h
+./RawEvent_hh.so: /home/user/Produkte/root-6.28.10/root-install/include/TString.h
+./RawEvent_hh.so: /home/user/Produkte/root-6.28.10/root-install/include/TMathBase.h
+./RawEvent_hh.so: /home/user/Produkte/root-6.28.10/root-install/include/ROOT/RStringView.hxx
+./RawEvent_hh.so: /home/user/Produkte/root-6.28.10/root-install/include/ROOT/TypeTraits.hxx
+./RawEvent_hh.so: /home/user/Produkte/root-6.28.10/root-install/include/TClass.h
+./RawEvent_hh.so: /home/user/Produkte/root-6.28.10/root-install/include/TDictionary.h
+./RawEvent_hh.so: /home/user/Produkte/root-6.28.10/root-install/include/ESTLType.h
+./RawEvent_hh.so: /home/user/Produkte/root-6.28.10/root-install/include/TObjArray.h
+./RawEvent_hh.so: /home/user/Produkte/root-6.28.10/root-install/include/TSeqCollection.h
+./RawEvent_hh.so: /home/user/Produkte/root-6.28.10/root-install/include/TCollection.h
+./RawEvent_hh.so: /home/user/Produkte/root-6.28.10/root-install/include/TIterator.h
+./RawEvent_hh.so: /home/user/Produkte/root-6.28.10/root-install/include/TVirtualRWMutex.h
+./RawEvent_hh.so: /home/user/Produkte/root-6.28.10/root-install/include/TVirtualMutex.h
+./RawEvent_hh.so: /home/user/Produkte/root-6.28.10/root-install/include/ROOT/RRangeCast.hxx
+./RawEvent_hh.so: /home/user/Produkte/root-6.28.10/root-install/include/ROOT/RSpan.hxx
+./RawEvent_hh.so: /home/user/Produkte/root-6.28.10/root-install/include/ROOT/span.hxx
+./RawEvent_hh.so: /home/user/Produkte/root-6.28.10/root-install/include/TUUID.h
+./RawEvent_hh.so: /home/user/Produkte/root-6.28.10/root-install/include/TList.h
+./RawEvent_hh.so: /home/user/Produkte/root-6.28.10/root-install/include/TBuffer.h
+./RawEvent_hh.so: /home/user/Produkte/root-6.28.10/root-install/include/TDataType.h
+./RawEvent_hh.so: /home/user/Produkte/root-6.28.10/root-install/include/Bytes.h
+./RawEvent_hh.so: /home/user/Produkte/root-6.28.10/root-install/include/TSystem.h
+./RawEvent_hh.so: /home/user/Produkte/root-6.28.10/root-install/include/TInetAddress.h
+./RawEvent_hh.so: /home/user/Produkte/root-6.28.10/root-install/include/TTimer.h
+./RawEvent_hh.so: /home/user/Produkte/root-6.28.10/root-install/include/TSysEvtHandler.h
+./RawEvent_hh.so: /home/user/Produkte/root-6.28.10/root-install/include/TQObject.h
+./RawEvent_hh.so: /home/user/Produkte/root-6.28.10/root-install/include/TVirtualQConnection.h
+./RawEvent_hh.so: /home/user/Produkte/root-6.28.10/root-install/include/TInterpreter.h
+./RawEvent_hh.so: /home/user/Produkte/root-6.28.10/root-install/include/TInterpreterValue.h
+./RawEvent_hh.so: /home/user/Produkte/root-6.28.10/root-install/include/TTime.h
+./RawEvent_hh.so: /home/user/Produkte/root-6.28.10/root-install/include/TArrayS.h
+./RawEvent_hh.so: /home/user/Produkte/root-6.28.10/root-install/include/TArray.h
+./RawEvent_hh.so: /home/user/Produkte/root-6.28.10/root-install/include/RVersion.h /home/user/Produkte/root-6.28.10/root-install/include/ROOT/RConfig.hxx /home/user/Produkte/root-6.28.10/root-install/include/TClass.h /home/user/Produkte/root-6.28.10/root-install/include/TDictAttributeMap.h /home/user/Produkte/root-6.28.10/root-install/include/TInterpreter.h /home/user/Produkte/root-6.28.10/root-install/include/TROOT.h /home/user/Produkte/root-6.28.10/root-install/include/TBuffer.h /home/user/Produkte/root-6.28.10/root-install/include/TMemberInspector.h /home/user/Produkte/root-6.28.10/root-install/include/TError.h /home/user/Produkte/root-6.28.10/root-install/include/RtypesImp.h /home/user/Produkte/root-6.28.10/root-install/include/TIsAProxy.h /home/user/Produkte/root-6.28.10/root-install/include/TFileMergeInfo.h /home/user/Produkte/root-6.28.10/root-install/include/TCollectionProxyInfo.h /home/user/Produkte/root-6.28.10/root-install/bin/rootcling
+RawEvent_hh__ROOTBUILDVERSION= 6.28/10
