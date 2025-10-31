@@ -55,6 +55,11 @@
         "xstring": "cpp",
         "xtr1common": "cpp",
         "xtree": "cpp",
-        "xutility": "cpp"
+        "xutility": "cpp",
+        "prova.C": "cpp",
+        "filter_data.C": "cpp",
+        "plot_spectrum.C": "cpp",
+        "subtract_bg.C": "cpp",
+        "prova_fondo.C": "cpp"
     }
 }
