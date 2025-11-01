@@ -5,7 +5,7 @@ struct FitResult {
     double sigma_err;
 };
 
-FitResult filter_data(const char *name_file,float acq_time, const char *fondo_name_file, float acq_time_fondo, int numBins = 500, double minX = 0, double maxX = 2000, double lowThr = 300, double highThr = 700, float c=1) {
+FitResult filter_data(const char *name_file,float acq_time, const char *fondo_name_file, float acq_time_fondo, int numBins = 500, double minX = 0, double maxX = 2000, double lowThr = 300, double highThr = 700, float c=1,int chan=2) {
     // //calibrated format: in alternatvia all'effettiva calibrazione si può tenere tutto in u.a. e convertire solo al momento del plot
     // TF1 *calib = new TF1("calib", Form("%f*x + %f", m, q));
     // h->GetXaxis()->SetTitle("Energy [keV]");
@@ -13,21 +13,22 @@ FitResult filter_data(const char *name_file,float acq_time, const char *fondo_na
     
     TFile *infile = new TFile(name_file);
     TTree *intree = (TTree*)infile->Get("Data_B");
+    TString channel = Form("Channel_%i.Energy", chan);
 
     //data filter
     TString condition = Form("Channel_0.Energy > %f && Channel_0.Energy < %f", lowThr, highThr);
     TH1F *filtered_h = new TH1F("filtered_h", "Filtered Energy", numBins, minX, maxX);
-    intree->Project("filtered_h", "Channel_2.Energy", condition);
+    intree->Project("filtered_h", channel, condition);
 
      //fondo
     TFile *infile_fondo = new TFile(fondo_name_file);
     TTree *intree_fondo = (TTree*)infile_fondo->Get("Data_B");
     TH1F *fondo = new TH1F("fondo","Fondo", numBins, minX, maxX);
-    intree_fondo->Project("fondo", "Channel_2.Energy");
-    fondo->Scale(acq_time/acq_time_fondo);
+    intree_fondo->Project("fondo", channel);
+    fondo->Scale(1/acq_time_fondo);
 
     TH1F *raw_h = new TH1F("raw_h", "Raw Energy", numBins, minX, maxX);
-    intree->Project("raw_h", "Channel_2.Energy");
+    intree->Project("raw_h", channel);
     filtered_h->Scale(raw_h->GetEntries()/filtered_h->GetEntries());
     
     // filtered_h->Add(fondo,-1);
@@ -45,6 +46,25 @@ FitResult filter_data(const char *name_file,float acq_time, const char *fondo_na
     int maxBin = filtered_h->GetMaximumBin();       
     double xPeak = filtered_h->GetBinCenter(maxBin);
     double yPeak = filtered_h->GetBinContent(maxBin);
+
+    if(chan==1){
+        double sogliaX = 900;  
+        int nBins = filtered_h->GetNbinsX();
+        maxBin = -1;
+        yPeak = -1;
+
+        for (int i = 1; i <= nBins; ++i) {
+            double val = filtered_h->GetBinContent(i);
+            double x = filtered_h->GetBinCenter(i);
+            if (x > sogliaX && val > yPeak) {
+                yPeak = val;
+                xPeak = x;
+                maxBin = i;
+            }
+        }
+    }
+
+    cout << "xPeak: " << xPeak << ", yPeak: " << yPeak << endl;
 
     double yHalf = yPeak / 2.0;
     int binLeft = maxBin, binRight = maxBin;
@@ -65,6 +85,10 @@ FitResult filter_data(const char *name_file,float acq_time, const char *fondo_na
     filtered_h->Draw("HIST");
     fGaus->Draw("SAME");
 
+    canvas->Modified();
+    canvas->Update();
+    canvas->Draw();
+
     FitResult res;
     res.mean = fGaus->GetParameter(1);
     res.sigma = fGaus->GetParameter(2);
@@ -73,7 +97,7 @@ FitResult filter_data(const char *name_file,float acq_time, const char *fondo_na
     return res;
 }
 
-void angular_dependence_graph(){
+void angular_dependence_graph(int chan=2){
     std::vector<FitResult> results;
 
     double angles[5] = {0,30,50,60,90};
@@ -88,7 +112,7 @@ void angular_dependence_graph(){
         TString file_name = Form("merged_data/energia_%gdeg.root", angles[i]);
         cout << file_name <<"\n";
         results.push_back(
-            filter_data(file_name.Data(), acq_times[i], bg_file_name.Data(), bg_acq_time,200,0,1400,400,425,0.7)
+            filter_data(file_name.Data(), acq_times[i], bg_file_name.Data(), bg_acq_time,200,0,1400,400,425,0.7,chan)
         );
         x_peaks[i] = results[i].mean;
         s_x_peaks[i] = results[i].sigma;
