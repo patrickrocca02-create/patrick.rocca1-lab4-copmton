@@ -6,10 +6,10 @@ struct FitResult {
 };
 
 FitResult filter_data(const char *name_file,float acq_time, const char *fondo_name_file, float acq_time_fondo, int numBins = 500, double minX = 0, double maxX = 2000, double lowThr = 300, double highThr = 700, float c=1) {
-    //calibrated format
-    TF1 *calib = new TF1("calib", Form("%f*x + %f", m, q));
-    h->GetXaxis()->SetTitle("Energy [keV]");
-    h->GetXaxis()->SetFunction(calib);
+    // //calibrated format: in alternatvia all'effettiva calibrazione si può tenere tutto in u.a. e convertire solo al momento del plot
+    // TF1 *calib = new TF1("calib", Form("%f*x + %f", m, q));
+    // h->GetXaxis()->SetTitle("Energy [keV]");
+    // h->GetXaxis()->SetFunction(calib);
     
     TFile *infile = new TFile(name_file);
     TTree *intree = (TTree*)infile->Get("Data_B");
@@ -92,6 +92,16 @@ void angular_dependence_graph(){
         );
         x_peaks[i] = results[i].mean;
         s_x_peaks[i] = results[i].sigma;
+    }
+
+    //calibration
+    double a = 1.1088657489201306;
+    double s_a = 0.003410386945931957;
+    double b = -16.57114900852498;
+    double s_b = 2.4810877440445904;
+    for(int i=0; i<5; i++){
+        x_peaks[i] = a*x_peaks[i]+b;
+        s_x_peaks[i] = sqrt(pow(x_peaks[i] * s_a, 2) + pow(s_b, 2) + pow(a*s_x_peaks[i],2));
     }
 
     auto gr = new TGraphErrors(5, angles, x_peaks, nullptr, s_x_peaks);

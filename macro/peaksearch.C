@@ -5,9 +5,9 @@ struct PeakInfo {
     double sigma;
 };
 
-std::vector<PeakInfo> peaksearch(const char *file_na, short data_chan=0, bool verbose=true, TH1D **h_na_arg=nullptr) {
+std::vector<PeakInfo> peaksearch(const char *file_na, short data_chan=0, bool verbose=true, TH1D **h_na_arg=nullptr, int nBin=2000, int xMin=10, int xMax=2010, float peak_min_ratio=0.18) {
 
-	TH1D *h_na = getHistoForChannelFromTree(file_na,data_chan,2000,10,2010);
+	TH1D *h_na = getHistoForChannelFromTree(file_na,data_chan,nBin,xMin,xMax);
 	TH1D *h_peaks = (TH1D*) h_na->Clone();
 
 	if(h_na_arg) *h_na_arg = h_na;
@@ -27,10 +27,9 @@ std::vector<PeakInfo> peaksearch(const char *file_na, short data_chan=0, bool ve
 	TSpectrum *s = new TSpectrum(3);
 	int nPeaks;
 	double *xPeaks;
-	int sigma = 40;
-	double minratio = 0.18;	// minimum ratio between a peak and the main peak
+	int sigma = 40;	// minimum ratio between a peak and the main peak
 
-	nPeaks = s->Search(h_peaks,sigma,"",minratio);
+	nPeaks = s->Search(h_peaks,sigma,"",peak_min_ratio);
 
 	xPeaks = s->GetPositionX();
 	if (verbose) 
@@ -163,10 +162,10 @@ void peaksearch(TH1* histo) { //Example only for the lesson
 
 }
 
-void multifit(const char *file_na, short data_chan=0, short n_sigma_range=3){
+void multifit(const char *file_na, const char *data_label = "detector", short data_chan=0, short n_sigma_range=3, int nBin=2000, int xMin=10, int xMax=2010, float peak_min_ratio=0.18){
 
 	TH1D *histo =nullptr;
-	auto peaks = peaksearch(file_na, data_chan, true, &histo);
+	auto peaks = peaksearch(file_na, data_chan, true, &histo, nBin, xMin, xMax, peak_min_ratio);
     int nPeaks = peaks.size();
     if (nPeaks == 0) {
         cout << "Nessun picco trovato!\n";
@@ -176,7 +175,7 @@ void multifit(const char *file_na, short data_chan=0, short n_sigma_range=3){
 	TCanvas *c1 = new TCanvas("c1", "Multi Fit", 800, 600);
 	histo->Draw();
 
-    for (int i = 0; i < nPeaks; i++) {
+    for (int i = 0; i < nPeaks; i++) {	
         double mean_guess  = peaks[i].mean;
         double sigma_guess = peaks[i].sigma;  
         double xmin = mean_guess - n_sigma_range*sigma_guess;
@@ -202,7 +201,32 @@ void multifit(const char *file_na, short data_chan=0, short n_sigma_range=3){
 
         cout << Form("Fit #%d: mean=%.2f sigma=%.2f\n",
                      i, fitFunc->GetParameter(3), fitFunc->GetParameter(4));
-    }
 
-    gPad->Update();
+		char conferma;
+		cout << "Vuoi salvare i risultati del fit in fit_parameters.csv? (s/n): ";
+		cin >> conferma;
+		conferma = std::tolower(conferma);
+
+		if (conferma != 's') {
+			cout << "Salvataggio annullato dall'utente." << endl;
+			continue;
+		}
+
+    	gPad->Update();
+
+		//Salva
+		ofstream file_fit("fit_parameters.csv", ios::app); // 'app' = append (aggiunge in fondo)
+		if (file_fit.is_open()) {
+			file_fit << data_label << ",";
+			for (int i = 0; i < 5; ++i) {
+				file_fit << fitFunc->GetParameter(i) << "," << fitFunc->GetParError(i);
+				if (i < 4) file_fit << ",";  // separatore tra colonne
+			}
+			file_fit << "\n";
+			file_fit.close();
+			cout << "Parametri salvati in fit_parameters.csv" << endl;
+		} else {
+			cout << "Errore: impossibile aprire fit_parameters.csv" << endl;
+		}
+    }
 }
