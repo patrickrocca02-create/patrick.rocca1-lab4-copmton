@@ -48,15 +48,15 @@ FitResult filter_data(const char *name_file,float acq_time, const char *fondo_na
     double yPeak = filtered_h->GetBinContent(maxBin);
 
     if(chan==1){
-        double sogliaX = 900;  
+        double sogliaX = 950;  
         int nBins = filtered_h->GetNbinsX();
         maxBin = -1;
         yPeak = -1;
 
-        for (int i = 1; i <= nBins; ++i) {
+        for (int i = nBins; i > 0; i--) {
             double val = filtered_h->GetBinContent(i);
             double x = filtered_h->GetBinCenter(i);
-            if (x > sogliaX && val > yPeak) {
+            if (x < sogliaX && val > yPeak) {
                 yPeak = val;
                 xPeak = x;
                 maxBin = i;
@@ -97,8 +97,9 @@ FitResult filter_data(const char *name_file,float acq_time, const char *fondo_na
     return res;
 }
 
-void angular_dependence_graph(int chan=2){
-    std::vector<FitResult> results;
+void angular_dependence_graph(){
+    std::vector<FitResult> results_1;
+    std::vector<FitResult> results_2;
 
     double angles[5] = {0,30,50,60,90};
     int acq_times[5] = {30,30,20,30,30}; 
@@ -106,45 +107,86 @@ void angular_dependence_graph(int chan=2){
     TString bg_file_name = "merged_data/fondo_coinc.root";
     int bg_acq_time = 20;
 
-    double x_peaks[5];
-    double s_x_peaks[5];
+    double x_peaks_1[5];
+    double s_x_peaks_1[5];
     for(int i=0; i<5; i++){
         TString file_name = Form("merged_data/energia_%gdeg.root", angles[i]);
         cout << file_name <<"\n";
-        results.push_back(
-            filter_data(file_name.Data(), acq_times[i], bg_file_name.Data(), bg_acq_time,200,0,1400,400,425,0.7,chan)
+        results_1.push_back(
+            filter_data(file_name.Data(), acq_times[i], bg_file_name.Data(), bg_acq_time,200,0,1400,400,425,0.7,1)
         );
-        x_peaks[i] = results[i].mean;
-        s_x_peaks[i] = results[i].sigma;
+        x_peaks_1[i] = results_1[i].mean;
+        s_x_peaks_1[i] = results_1[i].sigma_err;
+    }
+
+    double x_peaks_2[5];
+    double s_x_peaks_2[5];
+    for(int i=0; i<5; i++){
+        TString file_name = Form("merged_data/energia_%gdeg.root", angles[i]);
+        cout << file_name <<"\n";
+        results_2.push_back(
+            filter_data(file_name.Data(), acq_times[i], bg_file_name.Data(), bg_acq_time,200,0,1400,400,425,0.7,2)
+        );
+        x_peaks_2[i] = results_2[i].mean;
+        s_x_peaks_2[i] = results_2[i].sigma_err;
+    }
+
+    double sum[5];
+    double s_sum[5];
+    for(int i=0; i<5; i++){
+        sum[i] = results_1[i].mean + results_2[i].mean;
+        s_sum[i] = sqrt(results_1[i].sigma_err*results_1[i].sigma_err + results_2[i].sigma_err*results_2[i].sigma_err);
     }
 
     //calibration
-    double a = 1.1088657489201306;
-    double s_a = 0.003410386945931957;
-    double b = -16.57114900852498;
-    double s_b = 2.4810877440445904;
-    for(int i=0; i<5; i++){
-        x_peaks[i] = a*x_peaks[i]+b;
-        s_x_peaks[i] = sqrt(pow(x_peaks[i] * s_a, 2) + pow(s_b, 2) + pow(a*s_x_peaks[i],2));
-    }
+    // double a = 1.1088657489201306;
+    // double s_a = 0.003410386945931957;
+    // double b = -16.57114900852498;
+    // double s_b = 2.4810877440445904;
+    // for(int i=0; i<5; i++){
+    //     x_peaks_2[i] = a*x_peaks_2[i]+b;
+    //     s_x_peaks_2[i] = sqrt(pow(x_peaks_2[i] * s_a, 2) + pow(s_b, 2) + pow(a*s_x_peaks_2[i],2));
+    // }
 
-    auto gr = new TGraphErrors(5, angles, x_peaks, nullptr, s_x_peaks);
-    gr->SetTitle("Angular dependence of scattered energy;Angle [deg];Peak mean [keV]");
-    gr->SetMarkerStyle(20);
-    gr->SetMarkerColor(kBlue);
-    gr->SetLineColor(kBlue);
-    gr->SetLineWidth(2);
+    // Grafico scatterer
+    auto gr1 = new TGraphErrors(5, angles, x_peaks_1, nullptr, s_x_peaks_1);
+    gr1->SetTitle("Angular dependence of scattered energy;Angle [deg];Peak mean [keV]");
+    gr1->SetMarkerStyle(20);
+    gr1->SetMarkerColor(kRed);
+    gr1->SetLineColor(kRed);
+    gr1->SetLineWidth(2);
 
-    TF1 *f_model = new TF1("f_model", "[0]/(2 - cos(x * TMath::Pi()/180))", 0, 90);
-    f_model->SetParName(0, "a");
-    f_model->SetParameter(0, 600);
+    // Grafico detector
+    auto gr2 = new TGraphErrors(5, angles, x_peaks_2, nullptr, s_x_peaks_2);
+    gr2->SetMarkerStyle(21);
+    gr2->SetMarkerColor(kBlue);
+    gr2->SetLineColor(kBlue);
+    gr2->SetLineWidth(2);
 
+    // Somma
+    auto gr3 = new TGraphErrors(5, angles, sum, nullptr, s_sum);
+    gr3->SetMarkerStyle(22);
+    gr3->SetMarkerColor(kGreen);
+    gr3->SetLineColor(kGreen);
+    gr3->SetLineWidth(2);
+
+    // Canvas e disegno
     auto c = new TCanvas("c", "Angular Dependence", 800, 600);
-    gr->Draw("AP");
-    gr->Fit(f_model, "E");
-    f_model->SetLineColor(kRed);
-    f_model->Draw("SAME");
+    gr1->Draw("AP");    // Disegna il primo grafico con assi
+    gr1->GetYaxis()->SetRangeUser(0, 900);
+    gr2->Draw("P SAME"); // Disegna il secondo grafico sopra al primo
+    gr3->Draw("P SAME"); 
 
-    cout << "Fit result: a = " << f_model->GetParameter(0)
-        << " ± " << f_model->GetParError(0) << endl;
+    // Aggiungi una legenda per distinguerli
+    auto legend = new TLegend(0.6, 0.7, 0.88, 0.88);
+    legend->AddEntry(gr1, "Electron", "lp");
+    legend->AddEntry(gr2, "Scattered \gamma", "lp");
+    legend->AddEntry(gr3, "Sum", "lp");
+    legend->Draw();
+//     gr->Fit(f_model, "E");
+//     f_model->SetLineColor(kRed);
+//     f_model->Draw("SAME");
+
+//     cout << "Fit result: a = " << f_model->GetParameter(0)
+//         << " ± " << f_model->GetParError(0) << endl;
 }

@@ -60,6 +60,7 @@
         "filter_data.C": "cpp",
         "plot_spectrum.C": "cpp",
         "subtract_bg.C": "cpp",
-        "prova_fondo.C": "cpp"
+        "prova_fondo.C": "cpp",
+        "fit_calibrazione.C": "cpp"
     }
 }
