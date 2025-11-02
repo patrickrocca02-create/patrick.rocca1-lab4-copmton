@@ -10,6 +10,20 @@ void plot_calibrated_spectrum(const char *file_na, short data_chan=0, short n_bi
     double b = -38.2448;
     double s_b = 0.130712;
 
+    if(data_chan == 1){
+        //detector
+        a = 1.33096;
+        s_a = 0.000714035;
+        b = -533.442;
+        s_b = 0.68912;
+    } else if(data_chan == 2){
+         //scatterer
+        a = 2.07164;
+        s_a = 0.000400521;
+        b = -88.8456;
+        s_b = 0.281139;
+    }
+
     double xmin = 0;
     double xmax = 2000;
     double e_min = (xmin - b)/a;
