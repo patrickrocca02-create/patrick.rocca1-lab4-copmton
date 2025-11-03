@@ -14,41 +14,6 @@ FitResult filter_data(const char *name_file,float acq_time, const char *fondo_na
     TTree *intree = (TTree*)infile->Get("Data_B");
     TString channel = Form("Channel_%i.Energy", chan);
 
-
-    double target_sum = 500.0;
-    double tolerance = 10.0;
-
-    double E1 = 0, E2 = 0;
-    intree->SetBranchAddress("Channel_1.Energy", &E1);
-    intree->SetBranchAddress("Channel_2.Energy", &E2);
-
-    // === Crea file di output ===
-    TFile *outfile = new TFile(outfile_name, "RECREATE");
-    TTree *outtree = intree->CloneTree(0); // stesso schema, ma vuoto
-
-    Long64_t nentries = intree->GetEntries();
-    std::cout << "Numero totale di eventi: " << nentries << std::endl;
-
-    // === Loop sugli eventi ===
-    for (Long64_t i = 0; i < nentries; ++i) {
-        intree->GetEntry(i);
-        double sum = E1 + E2;
-
-        if (std::abs(sum - target_sum) < tolerance) {
-            outtree->Fill();
-        }
-    }
-
-    // === Salva file ===
-    outfile->Write();
-    outfile->Close();
-    infile->Close();
-
-    std::cout << "File salvato come '" << outfile_name << "' con eventi filtrati.\n";
-    return 0;
-
-
-
     //data filter
     TString condition = Form("Channel_0.Energy > %f && Channel_0.Energy < %f", lowThr, highThr);
     TH1F *filtered_h = new TH1F("filtered_h", "Filtered Energy", numBins, minX, maxX);
@@ -162,7 +127,7 @@ void angular_dependence_graph(){
         TString file_name = Form("merged_data/energia_%gdeg.root", angles[i]);
         cout << file_name <<"\n";
         results_2.push_back(
-            filter_data(file_name.Data(), acq_times[i], bg_file_name.Data(), bg_acq_time,200,0,1400,400,425,0.7,2)
+            filter_data(file_name.Data(), acq_times[i], bg_file_name.Data(), bg_acq_time,200,0,1400,thr_det[2*i],thr_det[2*i+1],0.7,2)
         );
         x_peaks_2[i] = results_2[i].mean;
         s_x_peaks_2[i] = results_2[i].sigma_err;
